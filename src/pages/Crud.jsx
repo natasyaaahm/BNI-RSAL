@@ -10,7 +10,6 @@ const EMPTY_FORM = {
 
 const ITEMS_PER_PAGE = 20;
 
-// ── Field wrapper ──────────────────────────────────────────────
 function Field({ label, children }) {
   return (
     <div>
@@ -22,7 +21,6 @@ function Field({ label, children }) {
   );
 }
 
-// ── Input / Select shared style ────────────────────────────────
 const inputCls = [
   "w-full border-[1.5px] border-slate-200 rounded-xl px-3.5 py-2.5",
   "text-sm text-slate-800 bg-slate-50 outline-none font-[inherit]",
@@ -32,7 +30,6 @@ const inputCls = [
 
 const selectCls = inputCls + " appearance-none cursor-pointer bg-[url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")] bg-no-repeat bg-[right_14px_center] pr-9";
 
-// ── Pagination ─────────────────────────────────────────────────
 function Pagination({ currentPage, totalPages, totalItems, onPageChange }) {
   if (totalPages <= 1) return null;
 
@@ -49,7 +46,7 @@ function Pagination({ currentPage, totalPages, totalItems, onPageChange }) {
 
   const navBtnCls = (disabled) =>
     [
-      "w-[34px] h-[34px] rounded-lg border-[1.5px] flex items-center justify-center",
+      "w-[32px] h-[32px] sm:w-[34px] sm:h-[34px] rounded-lg border-[1.5px] flex items-center justify-center",
       "text-sm font-bold transition-all duration-150 cursor-pointer",
       disabled
         ? "border-slate-200 bg-slate-50 text-slate-300 cursor-not-allowed"
@@ -58,7 +55,7 @@ function Pagination({ currentPage, totalPages, totalItems, onPageChange }) {
 
   const pageBtnCls = (active) =>
     [
-      "w-[34px] h-[34px] rounded-lg border-[1.5px] flex items-center justify-center",
+      "w-[32px] h-[32px] sm:w-[34px] sm:h-[34px] rounded-lg border-[1.5px] flex items-center justify-center",
       "text-sm font-bold transition-all duration-150 cursor-pointer",
       active
         ? "border-[#003F87] bg-[#003F87] text-white"
@@ -66,20 +63,23 @@ function Pagination({ currentPage, totalPages, totalItems, onPageChange }) {
     ].join(" ");
 
   return (
-    <div className="flex items-center justify-between px-6 py-3.5 border-t border-slate-100 flex-wrap gap-2">
-      <p className="text-[13px] text-slate-400">
-        Menampilkan{" "}
-        <strong className="text-slate-600">{start}–{end}</strong> dari{" "}
-        <strong className="text-slate-600">{totalItems}</strong> data
+    <div className="flex items-center justify-between px-4 sm:px-6 py-3 sm:py-3.5 border-t border-slate-100 flex-wrap gap-2">
+      {/* Shorter text on mobile */}
+      <p className="text-[12px] sm:text-[13px] text-slate-400">
+        <span className="hidden sm:inline">Menampilkan </span>
+        <strong className="text-slate-600">{start}–{end}</strong>
+        <span className="hidden sm:inline"> dari </span>
+        <span className="sm:hidden"> / </span>
+        <strong className="text-slate-600">{totalItems}</strong>
       </p>
 
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-1 sm:gap-1.5">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
           className={navBtnCls(currentPage === 1)}
         >
-          <ChevronLeft size={15} />
+          <ChevronLeft size={14} />
         </button>
 
         {pages.map((p, idx) =>
@@ -101,14 +101,13 @@ function Pagination({ currentPage, totalPages, totalItems, onPageChange }) {
           disabled={currentPage === totalPages}
           className={navBtnCls(currentPage === totalPages)}
         >
-          <ChevronRight size={15} />
+          <ChevronRight size={14} />
         </button>
       </div>
     </div>
   );
 }
 
-// ── Main Component ─────────────────────────────────────────────
 export default function Crud({ data, loading, onRefresh }) {
   const [form, setForm]        = useState(EMPTY_FORM);
   const [editRow, setEdit]     = useState(null);
@@ -189,23 +188,23 @@ export default function Crud({ data, loading, onRefresh }) {
   }
 
   return (
-    <div className="px-8 py-6 max-w-full overflow-x-hidden">
+    <div className="px-4 sm:px-8 py-4 sm:py-6 max-w-full overflow-x-hidden">
 
       {/* ── Create Form Card ── */}
-      <div className="bg-white rounded-[18px] shadow-[0_2px_20px_rgba(0,63,135,0.07)] border border-[rgba(0,63,135,0.06)] p-6 mb-5">
-        {/* Card header */}
-        <div className="flex items-start justify-between mb-5">
+      <div className="bg-white rounded-[18px] shadow-[0_2px_20px_rgba(0,63,135,0.07)] border border-[rgba(0,63,135,0.06)] p-4 sm:p-6 mb-4 sm:mb-5">
+        <div className="flex items-start justify-between mb-4 sm:mb-5">
           <div>
-            <h2 className="text-[16px] font-bold text-[#002960]">Tambah Data Baru</h2>
+            <h2 className="text-[15px] sm:text-[16px] font-bold text-[#002960]">Tambah Data Baru</h2>
             <p className="text-xs text-slate-400 mt-0.5">Isi semua kolom untuk menambahkan entri baru</p>
           </div>
-          <span className="inline-flex items-center gap-1.5 bg-[#EEF4FF] text-[#003F87] text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">
-            <ClipboardList size={12} /> Form Input
+          <span className="inline-flex items-center gap-1.5 bg-[#EEF4FF] text-[#003F87] text-[10px] sm:text-[11px] font-bold px-2 sm:px-3 py-1 rounded-full whitespace-nowrap">
+            <ClipboardList size={11} /> Form Input
           </span>
         </div>
 
         <form onSubmit={handleCreate}>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-4">
+          {/* 1 col on mobile → 2 col sm → 3 col lg */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 sm:gap-x-5 gap-y-3 sm:gap-y-4">
             <Field label="Periode">
               <input type="text" className={inputCls} placeholder="cth: January,2025"
                 value={form.Periode} onChange={(e) => setF("Periode", e.target.value)} required />
@@ -261,12 +260,11 @@ export default function Crud({ data, loading, onRefresh }) {
                 value={form.LSRUnit} onChange={(e) => setF("LSRUnit", e.target.value)} required />
             </Field>
 
-            {/* Submit */}
             <div className="col-span-full pt-1">
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold text-white
+                className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-sm font-bold text-white
                   bg-gradient-to-br from-[#F37021] to-[#e05c10]
                   shadow-[0_4px_14px_rgba(243,112,33,0.3)]
                   transition-all duration-200
@@ -285,24 +283,23 @@ export default function Crud({ data, loading, onRefresh }) {
 
       {/* ── Data Table Card ── */}
       <div className="bg-white rounded-[18px] shadow-[0_2px_20px_rgba(0,63,135,0.07)] border border-[rgba(0,63,135,0.06)] overflow-hidden">
-        {/* Card header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100">
           <div>
-            <h2 className="text-[16px] font-bold text-[#002960]">Daftar Data Produksi</h2>
-            <p className="text-xs text-slate-400 mt-0.5">Kelola semua entri data yang sudah tersimpan</p>
+            <h2 className="text-[15px] sm:text-[16px] font-bold text-[#002960]">Daftar Data Produksi</h2>
+            <p className="text-xs text-slate-400 mt-0.5 hidden sm:block">Kelola semua entri data yang sudah tersimpan</p>
           </div>
-          <span className="inline-flex items-center gap-1.5 bg-[#EEF4FF] text-[#003F87] text-[11px] font-bold px-3 py-1 rounded-full whitespace-nowrap">
-            <FolderOpen size={12} /> Data Table
+          <span className="inline-flex items-center gap-1.5 bg-[#EEF4FF] text-[#003F87] text-[10px] sm:text-[11px] font-bold px-2 sm:px-3 py-1 rounded-full whitespace-nowrap">
+            <FolderOpen size={11} /> Data Table
           </span>
         </div>
 
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-sm">
+        {/* Scrollable table wrapper */}
+        <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+          <table className="w-full border-collapse text-sm min-w-[480px]">
             <thead>
               <tr className="bg-slate-50 border-b-2 border-slate-100">
                 {["Periode", "Product", "Premium", "BAS", "LSR", "Aksi"].map((h) => (
-                  <th key={h} className="px-4 py-3 text-left text-[11px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
+                  <th key={h} className="px-3 sm:px-4 py-3 text-left text-[10px] sm:text-[11px] font-bold uppercase tracking-widest text-slate-400 whitespace-nowrap">
                     {h}
                   </th>
                 ))}
@@ -324,28 +321,28 @@ export default function Crud({ data, loading, onRefresh }) {
               ) : (
                 paginatedData.map((row) => (
                   <tr key={row.id} className="border-b border-slate-50 hover:bg-slate-50 transition-colors duration-100">
-                    <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row["Periode"]}</td>
-                    <td className="px-4 py-3 text-slate-600">{row["Product"]}</td>
-                    <td className="px-4 py-3 text-slate-600 whitespace-nowrap font-mono text-[13px]">{formatIDR(row["Basic Premium Regular"])}</td>
-                    <td className="px-4 py-3 font-semibold text-[#002960] whitespace-nowrap">{row["BAS Name"]}</td>
-                    <td className="px-4 py-3 text-slate-600 whitespace-nowrap">{row["LSR Name"]}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
+                    <td className="px-3 sm:px-4 py-3 text-slate-600 whitespace-nowrap text-xs sm:text-sm">{row["Periode"]}</td>
+                    <td className="px-3 sm:px-4 py-3 text-slate-600 text-xs sm:text-sm">{row["Product"]}</td>
+                    <td className="px-3 sm:px-4 py-3 text-slate-600 whitespace-nowrap font-mono text-[11px] sm:text-[13px]">{formatIDR(row["Basic Premium Regular"])}</td>
+                    <td className="px-3 sm:px-4 py-3 font-semibold text-[#002960] whitespace-nowrap text-xs sm:text-sm">{row["BAS Name"]}</td>
+                    <td className="px-3 sm:px-4 py-3 text-slate-600 whitespace-nowrap text-xs sm:text-sm">{row["LSR Name"]}</td>
+                    <td className="px-3 sm:px-4 py-3">
+                      <div className="flex items-center gap-1.5 sm:gap-2">
                         <button
                           onClick={() => openEdit(row)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold
+                          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-bold
                             bg-[rgba(0,63,135,0.08)] text-[#003F87] border-none cursor-pointer
-                            transition-colors duration-150 hover:bg-[rgba(0,63,135,0.15)]"
+                            transition-colors duration-150 hover:bg-[rgba(0,63,135,0.15)] whitespace-nowrap"
                         >
-                          <Pencil size={12} /> Edit
+                          <Pencil size={11} /> Edit
                         </button>
                         <button
                           onClick={() => handleDelete(row.id)}
-                          className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold
+                          className="inline-flex items-center gap-1 sm:gap-1.5 px-2 sm:px-3 py-1 sm:py-1.5 rounded-lg text-[11px] sm:text-xs font-bold
                             bg-red-50 text-red-500 border-none cursor-pointer
-                            transition-colors duration-150 hover:bg-red-100"
+                            transition-colors duration-150 hover:bg-red-100 whitespace-nowrap"
                         >
-                          <Trash2 size={12} /> Hapus
+                          <Trash2 size={11} /> Hapus
                         </button>
                       </div>
                     </td>
@@ -365,23 +362,29 @@ export default function Crud({ data, loading, onRefresh }) {
       </div>
 
       {/* ── Footer ── */}
-      <p className="text-center text-xs text-slate-400 pt-6 pb-2">
+      <p className="text-center text-xs text-slate-400 pt-5 sm:pt-6 pb-2">
         © 2025 BNI Life Insurance — Dashboard Produksi Internal
       </p>
 
       {/* ── Edit Modal ── */}
       {editRow && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur"
+          className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/40 backdrop-blur"
           onClick={(e) => e.target === e.currentTarget && setEdit(null)}
         >
-          <div className="bg-white rounded-[20px] shadow-[0_20px_60px_rgba(0,41,96,0.2)] border border-[rgba(0,63,135,0.08)] w-full max-w-lg max-h-[90vh] overflow-y-auto animate-[modalIn_0.25s_ease_forwards]">
+          {/* On mobile: bottom sheet style; on sm+: centered modal */}
+          <div className="bg-white rounded-t-[24px] sm:rounded-[20px] shadow-[0_20px_60px_rgba(0,41,96,0.2)] border border-[rgba(0,63,135,0.08)] w-full sm:max-w-lg max-h-[92vh] overflow-y-auto animate-[modalIn_0.25s_ease_forwards]">
+
+            {/* Drag handle — mobile only */}
+            <div className="flex justify-center pt-3 sm:hidden">
+              <div className="w-10 h-1 rounded-full bg-slate-200" />
+            </div>
 
             {/* Modal header */}
-            <div className="sticky top-0 z-10 flex items-center justify-between px-6 py-5 bg-white border-b border-slate-100 rounded-t-[20px]">
+            <div className="sticky top-0 z-10 flex items-center justify-between px-5 sm:px-6 py-4 sm:py-5 bg-white border-b border-slate-100 rounded-t-[24px] sm:rounded-t-[20px]">
               <div>
-                <h2 className="text-[16px] font-bold text-[#002960]">Edit Data</h2>
-                <p className="text-xs text-slate-400 mt-0.5">Perbarui informasi entri yang dipilih</p>
+                <h2 className="text-[15px] sm:text-[16px] font-bold text-[#002960]">Edit Data</h2>
+                <p className="text-xs text-slate-400 mt-0.5 hidden sm:block">Perbarui informasi entri yang dipilih</p>
               </div>
               <button
                 onClick={() => setEdit(null)}
@@ -392,8 +395,8 @@ export default function Crud({ data, loading, onRefresh }) {
             </div>
 
             {/* Modal form */}
-            <form onSubmit={handleUpdate} className="p-6 flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-4">
+            <form onSubmit={handleUpdate} className="p-4 sm:p-6 flex flex-col gap-3 sm:gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <Field label="Periode">
                   <input type="text" className={inputCls} value={editRow.Periode}
                     onChange={(e) => setEdit((m) => ({ ...m, Periode: e.target.value }))} required />
@@ -403,7 +406,7 @@ export default function Crud({ data, loading, onRefresh }) {
                     onChange={(e) => setEdit((m) => ({ ...m, Product: e.target.value }))} required />
                 </Field>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <Field label="Basic Premium (Rp)">
                   <input type="number" className={inputCls} value={editRow.Premium}
                     onChange={(e) => setEdit((m) => ({ ...m, Premium: e.target.value }))} required />
@@ -413,7 +416,7 @@ export default function Crud({ data, loading, onRefresh }) {
                     onChange={(e) => setEdit((m) => ({ ...m, Fee: e.target.value }))} required />
                 </Field>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
                 <Field label="BAS Name">
                   <input type="text" className={inputCls} value={editRow.BAS}
                     onChange={(e) => setEdit((m) => ({ ...m, BAS: e.target.value }))} required />
@@ -424,8 +427,7 @@ export default function Crud({ data, loading, onRefresh }) {
                 </Field>
               </div>
 
-              {/* Modal actions */}
-              <div className="flex gap-3 pt-1">
+              <div className="flex gap-2.5 sm:gap-3 pt-1">
                 <button
                   type="submit"
                   disabled={saving}
