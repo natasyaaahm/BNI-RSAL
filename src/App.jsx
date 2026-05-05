@@ -1,12 +1,13 @@
 // App.jsx
 import { useState, useEffect, useCallback } from "react";
-import { getAllData } from "./api";
+import { getAllData, getAllDataTeller } from "./api";
 import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
 import BottomNav from "./components/BottomNav";
 import Dashboard from "./pages/Dashboard";
 import Crud from "./pages/Crud";
 import Login from "./pages/Login";
+import TellerDashboard from "./pages/TellerDashboard";
 import "./global.css";
 
 // ── Session helpers ──────────────────────────────────────────
@@ -37,6 +38,8 @@ export default function App() {
   const [page, setPage]       = useState("dashboard");
   const [data, setData]       = useState(null);
   const [loading, setLoading] = useState(true);
+  const [dataTeller, setDataTeller]   = useState(null);
+  const [tellerLoading, setTellerLoading] = useState(true);
   const [sidebarOpen, setSidebar] = useState(false);
 
   // Session state — diinisialisasi dari localStorage
@@ -83,6 +86,14 @@ export default function App() {
   useEffect(() => {
     if (session) loadData();
   }, [session, loadData]);
+  useEffect(() => {
+    if (!session) return;
+    getAllDataTeller()
+      .then(setDataTeller)
+      .catch(() => setDataTeller([]))
+      .finally(() => setTellerLoading(false));
+  }, [session]);
+
 
   const handleNavigate = (newPage) => {
     setPage(newPage);
@@ -93,6 +104,8 @@ export default function App() {
   if (!session) {
     return <Login onLogin={handleLogin} />;
   }
+
+  const tellerProps = { data: dataTeller, loading: tellerLoading };
 
   return (
     <div className="flex min-h-screen bg-[#F0F4FA] overflow-x-hidden">
@@ -124,6 +137,7 @@ export default function App() {
 
         <main className="flex-1 min-w-0 overflow-x-hidden pb-24 lg:pb-0">
           {page === "dashboard" && <Dashboard data={data} loading={loading} onNavigate={handleNavigate} />}
+          {page === "tellerdashboard" && <TellerDashboard {...tellerProps} />}
           {page === "crud"      && <Crud data={data} loading={loading} onRefresh={loadData} />}
         </main>
 

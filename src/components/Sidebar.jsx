@@ -1,11 +1,12 @@
 // components/Sidebar.jsx
 import {
   LayoutDashboard, FilePen, FileSpreadsheet,
-  X, ChevronLeft, LogOut, User,
+  X, ChevronLeft, LogOut, User,Monitor,
 } from "lucide-react";
 
 const NAV_ITEMS = [
   { id: "dashboard", label: "Dashboard",        icon: LayoutDashboard },
+  { id: "tellerdashboard", label: "Teller Dashboard", icon: Monitor },
   { id: "crud",      label: "Input / Edit Data", icon: FilePen },
 ];
 
